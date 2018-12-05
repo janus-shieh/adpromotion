@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rabbit.adpromotion.web.dao.DemoTableMapper">
+
+    <resultMap type="com.rabbit.adpromotion.web.dao.model.DemoTable" id="demoTableMap">
+        <result property="id" column="id"/>
+        <result property="demoName" column="demo_name"/>
+        <result property="demoAge" column="demo_age"/>
+        <result property="demoTime" column="demo_time"/>
+    </resultMap>
+
+    <select id="queryDemoTable" resultType="com.rabbit.adpromotion.web.dao.model.DemoTable">
+        select id as id,demo_name as demoName,demo_age as demoAge,
+         DATE_FORMAT(demo_time,'%Y-%m-%d %H:%i:%S') as demoTime
+         from demo_table
+    </select>
+
+    <select id="queryDemoTableById" resultMap="demoTableMap">
+        select * from demo_table where id=#{id}
+    </select>
+
+    <insert id="insertDemoTable" parameterType="com.rabbit.adpromotion.web.dao.model.DemoTable">
+        insert into demo_table(demo_name,demo_age,demo_time)
+        values (#{demoName,jdbcType=VARCHAR},#{demoAge,jdbcType=INTEGER},#{demoTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateDemoTable" parameterType="com.rabbit.adpromotion.web.dao.model.DemoTable">
+        update demo_table
+        <set>
+            <if test="demoName!=null">
+                demo_name=#{demoName},
+            </if>
+            <if test="demoName!=null">
+                demo_age=#{demoAge},
+            </if>
+            <if test="demoTime!=null">
+                demo_time=#{demoTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteDemoTable">
+        delete from demo_table where id=#{id}
+    </delete>
+</mapper>
